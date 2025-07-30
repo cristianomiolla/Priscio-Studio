@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Art Studio</title>
+
+    <!-- ====================================================== -->
+    <!-- ============== STYLE GLOBALE E VARIABILI ============== -->
+    <!-- ====================================================== -->
+    <style>
+        :root {
+            --colore-primario: #1a1a1a;
+            --colore-secondario: #f4f4f4;
+            --colore-accento: #00aaff;
+            --colore-testo: #333333;
+            --larghezza-sidebar: 240px;
+            --font-principale: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-principale); color: var(--colore-testo); display: flex; background-color: #fff; }
+    </style>
+
+    <!-- ====================================================== -->
+<!-- =========== SEZIONE CURSORE PERSONALIZZATO =========== -->
+<!-- ====================================================== -->
+<div id="custom-cursor"></div>
+
+<style>
+    /* Nasconde il cursore originale su tutta la pagina e sugli elementi interattivi */
+    body, a, button {
+        cursor: none;
+    }
+
+    /* Stile del nostro cerchio-cursore */
+    #custom-cursor {
+        position: fixed; /* Rimane fermo rispetto alla finestra, non scorre con la pagina */
+        width: 25px;
+        height: 25px;
+        background-color: var(--colore-accento); /* Usa la variabile globale per il colore */
+        border-radius: 50%; /* Lo rende un cerchio perfetto */
+        
+        /* Proprietà fondamentali per il funzionamento */
+        z-index: 10000; /* Lo mette sopra a qualsiasi altro elemento della pagina */
+        pointer-events: none; /* Fa in modo che il cursore non blocchi i click sugli elementi sottostanti */
+        transform: translate(-50%, -50%); /* Centra il cerchio sulla posizione esatta del puntatore */
+        transition: transform 0.1s ease-out; /* Aggiunge un leggero effetto "fluido" al movimento */
+    }
+</style>
+
+<script>
+    // Seleziona il nostro elemento cursore
+    const cursor = document.getElementById('custom-cursor');
+
+    // Aggiunge un "ascoltatore" che si attiva ogni volta che il mouse si muove
+    window.addEventListener('mousemove', e => {
+        // Aggiorna la posizione del nostro cerchio usando le coordinate del mouse (e.clientX e e.clientY)
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+</script>
+
+</head>
+<body>
+
+    <!-- ====================================================== -->
+    <!-- ================== STYLE: SIDEBAR ==================== -->
+    <!-- ====================================================== -->
+    <style>
+        .sidebar {
+            width: var(--larghezza-sidebar);
+            height: 100vh;
+            background-color: var(--colore-primario);
+            color: var(--colore-secondario);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 10;
+        }
+        
+        .sidebar .studio-name { font-size: 1.5rem; margin-bottom: 3rem; padding: 0 1rem; text-align: center; }
+        .sidebar ul { list-style-type: none; width: 100%; }
+
+        .sidebar ul li a {
+            display: block; color: var(--colore-secondario); text-decoration: none;
+            padding: 1rem 2rem; font-size: 1.1rem; transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .sidebar ul li a:not(.cta-button):hover {
+            background-color: var(--colore-accento);
+            color: var(--colore-primario);
+        }
+        
+        /* NUOVO STILE per il link attivo durante lo scorrimento */
+        .sidebar ul li a.active-link {
+            background-color: var(--colore-accento);
+            color: var(--colore-primario);
+            font-weight: bold;
+        }
+        
+        .sidebar-bottom { padding-bottom: 2rem; }
+        .social-icons { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .social-icons a { color: var(--colore-secondario); opacity: 0.7; transition: opacity 0.3s ease, transform 0.3s ease; }
+        .social-icons a:hover { opacity: 1; transform: scale(1.1); }
+        .social-icons svg { width: 24px; height: 24px; }
+
+        .cta-button {
+            display: block; background-color: var(--colore-accento); color: var(--colore-primario) !important;
+            text-align: center; border-radius: 5px; margin: 0 1.5rem; font-weight: bold;
+            padding: 1rem; transition: transform 0.2s ease, background-color 0.2s ease; text-decoration: none;
+        }
+        .cta-button:hover { background-color: var(--colore-secondario); color: var(--colore-accento) !important; transform: scale(1.05); }
+    </style>
+    
+    <nav class="sidebar">
+        <div>
+            <h1 class="studio-name">Priscio Studio</h1>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-bottom">
+            <div class="social-icons">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.2,5.2 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.2,5.2 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/></svg></a>
+                <a href="https://behance.net" target="_blank" rel="noopener noreferrer" title="Behance"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.3,7.5H15.2V9.4H19.3V7.5M21,12.2H15.2V14.1H21V12.2M15.2,4.7H22V2H13.9C13.9,2 11.9,4.7 11.9,4.7C11.9,4.7 13.9,4.7 15.2,4.7M2,12.2H8.9C8.9,15.1 6.9,16.6 4.6,16.6C2.3,16.6 2,15.1 2,15.1H2V12.2M8.9,9.4H2V6.6H8.9V9.4M12.1,12C12.1,12 11.6,17.4 8.7,19.2C7.3,20.2 2,22 2,22H13.6C13.6,22 17,19.3 17,19.3C17,19.3 12.1,16.1 12.1,12Z"/></svg></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M18.5,18.5V13.2A3.26,3.26 0 0,0 15.24,9.94C14.39,9.94 13.4,10.43 12.9,11.2V10.13H10.13V18.5H12.9V13.57C12.9,12.8 13.54,12.17 14.31,12.17C15.08,12.17 15.71,12.8 15.71,13.57V18.5H18.5M6.88,8.56A1.68,1.68 0 0,0 8.56,6.88C8.56,6 7.88,5.32 7.06,5.32C6.24,5.32 5.56,6 5.56,6.88C5.56,7.76 6.24,8.56 7.06,8.56C7.08,8.56 7.1,8.56 7.12,8.56L6.88,8.56M8.27,18.5V10.13H5.56V18.5H8.27Z"/></svg></a>
+            </div>
+             <a href="mailto:info@visualartstudio.com" class="cta-button">Contattaci</a>
+        </div>
+    </nav>
+    
+    <!-- ====================================================== -->
+    <!-- ============== STYLE: CONTENUTO PRINCIPALE ============== -->
+    <!-- ====================================================== -->
+    <style>
+        .content { margin-left: var(--larghezza-sidebar); width: calc(100% - var(--larghezza-sidebar)); }
+        section { min-height: 100vh; padding: 4rem 2rem; border-bottom: 1px solid #ddd; position: relative; }
+        section:last-child { border-bottom: none; }
+        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; border-bottom: 3px solid var(--colore-accento); display: inline-block; padding-bottom: 0.5rem; }
+    </style>
+
+    <main class="content">
+
+        <!-- ================== SEZIONE HOME ================== -->
+        <section id="home">
+            <video id="home-video" autoplay loop muted playsinline>
+                <source src="/project/placeholder.mp4" type="video/mp4">
+                Il tuo browser non supporta il tag video.
+            </video>
+            <style>
+                #home { padding: 0; overflow: hidden; }
+                #home-video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -1; }
+            </style>
+        </section>
+        
+        <!-- ================== SEZIONE WORK ================== -->
+        <section id="work">
+            <h2>I Nostri Lavori</h2>
+            <p>Una selezione dei nostri progetti più recenti.</p>
+            <div class="work-gallery">
+                <div class="work-item">Progetto 1</div>
+                <div class="work-item">Progetto 2</div>
+                <div class="work-item">Progetto 3</div>
+            </div>
+            <style>
+                .work-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+                .work-item { height: 200px; background-color: var(--colore-secondario); border: 1px solid #ccc; display: flex; justify-content: center; align-items: center; font-weight: bold; transition: transform 0.3s; }
+                .work-item:hover { transform: scale(1.05); }
+            </style>
+        </section>
+
+        <!-- ================== SEZIONE TEAM ================== -->
+        <section id="team">
+            <h2>Il Nostro Team</h2>
+            <p>Le menti creative dietro ogni progetto. Pronti a collaborare?</p>
+            <div class="team-container">
+                <div class="team-member">
+                    <img src="https://placehold.co/150x150/00aaff/f4f4f4?text=Foto" alt="Membro 1">
+                    <h3>Nome Cognome</h3><p>Art Director</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://placehold.co/150x150/1a1a1a/f4f4f4?text=Foto" alt="Membro 2">
+                    <h3>Nome Cognome</h3><p>Lead Designer</p>
+                </div>
+            </div>
+            <style>
+                #team { background-color: #fafafa; }
+                .team-container { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2rem; justify-content: center; }
+                .team-member { text-align: center; flex-basis: 250px; flex-grow: 1; max-width: 300px; }
+                .team-member img { border-radius: 50%; margin-bottom: 1rem; }
+            </style>
+        </section>
+
+    </main>
+    
+    <!-- ====================================================== -->
+    <!-- ================ NUOVO SCRIPT GLOBALE =================== -->
+    <!-- ====================================================== -->
+    <script>
+        const sections = document.querySelectorAll('main section');
+        const navLinks = document.querySelectorAll('.sidebar ul a[href^="#"]');
+
+        const onScroll = () => {
+            let currentSectionId = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                
+                // Impostiamo una "zona di attivazione" a metà schermo.
+                // La sezione viene considerata attiva se la sua parte superiore
+                // ha superato questa linea.
+                if (sectionTop < window.innerHeight / 2) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active-link');
+                if (link.getAttribute('href') === '#' + currentSectionId) {
+                    link.classList.add('active-link');
+                }
+            });
+        };
+
+        // Aggiungi l'ascoltatore di eventi per lo scroll
+        window.addEventListener('scroll', onScroll);
+
+        // Esegui la funzione una volta al caricamento per evidenziare il link iniziale
+        document.addEventListener('DOMContentLoaded', onScroll);
+    </script>
+
+</body>
+</html>
