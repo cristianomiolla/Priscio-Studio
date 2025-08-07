@@ -64,6 +64,7 @@
                 --colore-testo: #1D2125;      /* Testo scuro, coerente con il primario */
                 
                 --larghezza-sidebar: 240px;
+                --altezza-navbar-mobile: 70px;
                 --font-principale: 'Funnel', sans-serif;
             }
 
@@ -121,16 +122,19 @@
     
     <main class="content">
 
-    <!-- ============== STYLE: CONTENUTO GENERALE (con barretta sotto e stili mobile) ============== -->
+        <!-- ============== STYLE: CONTENUTO GENERALE ============== -->
         <style>
-            /* --- Stili Desktop --- */
+            /* --- Stili di base per il layout Desktop --- */
             .content { 
+                /* Crea lo spazio a sinistra per la sidebar */
                 margin-left: var(--larghezza-sidebar);
                 width: calc(100% - var(--larghezza-sidebar));
             }
             
             section {
+                /* Ogni sezione occupa almeno l'intera altezza dello schermo */
                 min-height: 100vh;
+                /* Spaziatura interna generosa per un look arioso */
                 padding: 96px 64px;
                 position: relative; 
             }
@@ -147,6 +151,7 @@
                 display: inline-block;
             }
 
+            /* Decorazione a linea sotto il titolo */
             h2::after {
                 content: '';
                 position: absolute;
@@ -157,19 +162,25 @@
                 background-color: var(--colore-accento);
             }
 
-            /* --- Stili Mobile --- */
+            /* ====================================================== */
+            /* ============== MEDIA QUERY PER MOBILE ================ */
+            /* ====================================================== */
             @media (max-width: 800px) {
                 .content {
-                    /* Disattiva il layout per la sidebar */
+                    /* Rimuove il margine e aggiunge padding per la navbar superiore */
                     margin-left: 0;
                     width: 100%;
-                    /* Aggiunge spazio per la navbar superiore fissa */
-                    padding-top: 70px;
+                    padding-top: var(--altezza-navbar-mobile);
                 }
 
                 section {
-                    /* Riduce il padding su mobile */
+                    /* Riduce la spaziatura su schermi piccoli */
                     padding: 48px 24px;
+                    /* 
+                      MODIFICA CHIAVE: Aggiunge un margine "invisibile" in alto
+                      per compensare la navbar fissa durante lo scorrimento.
+                    */
+                    scroll-margin-top: var(--altezza-navbar-mobile);
                 }
 
                 h2 {
@@ -211,7 +222,7 @@
             </style>
         </section>
         
-    <!-- ================== SEZIONE WORK (Responsive con Hover Mobile Disattivato) ====================== -->
+        <!-- ================== SEZIONE WORK (Hover Mobile Corretto) ====================== -->
         <section id="work">
             <h2>I Nostri Lavori</h2>
             <p>Una selezione dei nostri progetti più recenti.</p>
@@ -254,12 +265,12 @@
                 }
 
                 .work-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; margin-top: 32px; }
-                .work-item { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border: 2px solid var(--colore-primario); }
+                .work-item { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border: 2px solid var(--colore-primario); transition: transform 0.1s ease; /* Transizione per :active */ }
                 .work-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 0.3s ease; }
-                .work-item-marquee { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--colore-primario); color: var(--colore-secondario); white-space: nowrap; opacity: 0; transition: opacity 0.3s ease; }
+                .work-item-marquee { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--colore-primario); color: var(--colore-secondario); white-space: nowrap; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; /* Assicura che si possa cliccare l'immagine sotto */ }
                 .work-item-marquee span { display: inline-block; padding: 12px; text-transform: uppercase; animation: marquee 10s linear infinite; animation-play-state: paused; }
                 
-                /* MODIFICA: Le regole di hover sono ora attive solo su dispositivi con mouse */
+                /* MODIFICA CHIAVE: Le regole di hover sono ora attive solo su dispositivi con mouse */
                 @media (hover: hover) {
                     .work-item:hover img {
                         filter: grayscale(1) brightness(0.5);
@@ -270,6 +281,11 @@
                     .work-item:hover .work-item-marquee span {
                         animation-play-state: running;
                     }
+                }
+
+                /* Feedback visivo istantaneo per il tocco su mobile */
+                .work-item:active {
+                    transform: scale(0.98);
                 }
                 
                 #project-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--colore-accento); z-index: 1000; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.6, 0.04, 0.98, 0.335); }
@@ -290,6 +306,7 @@
             </style>
 
             <script> 
+                // Lo script non necessita di modifiche
                 document.addEventListener('DOMContentLoaded', () => {
                     const workItems = document.querySelectorAll('#work .work-item');
                     const overlay = document.querySelector('#work #project-overlay');
@@ -804,6 +821,91 @@
                 window.addEventListener('scroll', onScroll);
             });
         </script>
+
+    <!-- ====================================================== -->
+    <!-- ============== PULSANTE CTA PER MOBILE (con visibilità condizionale) ============== -->
+    <!-- ====================================================== -->
+    <a href="mailto:info@priscio.studio" id="mobile-cta">Contattaci</a>
+
+    <style>
+        /* Di base, il pulsante è nascosto su desktop */
+        #mobile-cta {
+            display: none;
+        }
+
+        /* Stili che si attivano solo su schermi piccoli */
+        @media (max-width: 800px) {
+            #mobile-cta {
+                /* Visibilità e Posizionamento */
+                display: block;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 9;
+                
+                /* Stile Brutalista */
+                background-color: var(--colore-accento);
+                color: var(--colore-primario);
+                border-top: 2px solid var(--colore-primario);
+                
+                /* Tipografia */
+                text-align: center;
+                text-transform: uppercase;
+                font-weight: bold;
+                letter-spacing: 1px;
+                font-size: 16px;
+                
+                /* Spaziatura */
+                padding: 20px;
+
+                /* Transizione per l'effetto di apparizione/scomparsa */
+                transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            }
+
+            /* NUOVA CLASSE: Nasconde il pulsante quando la sezione home è visibile */
+            #mobile-cta.is-hidden {
+                opacity: 0;
+                transform: translateY(100%); /* Lo fa scivolare fuori dallo schermo */
+                pointer-events: none; /* Disabilita i click quando è nascosto */
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const homeSection = document.querySelector('#home');
+            const mobileCta = document.querySelector('#mobile-cta');
+
+            // Controlla se entrambi gli elementi esistono prima di procedere
+            if (homeSection && mobileCta) {
+                // Opzioni per l'observer: la funzione si attiverà quando
+                // la sezione home è visibile per meno del 10% (cioè è quasi uscita dallo schermo)
+                const observerOptions = {
+                    root: null, // viewport
+                    threshold: 0.1
+                };
+
+                // La funzione che viene eseguita quando la visibilità cambia
+                const handleIntersection = (entries) => {
+                    entries.forEach(entry => {
+                        // Se la sezione home È visibile...
+                        if (entry.isIntersecting) {
+                            // ...nascondi il pulsante.
+                            mobileCta.classList.add('is-hidden');
+                        } else {
+                            // ...altrimenti, mostralo.
+                            mobileCta.classList.remove('is-hidden');
+                        }
+                    });
+                };
+
+                // Crea e avvia l'observer
+                const observer = new IntersectionObserver(handleIntersection, observerOptions);
+                observer.observe(homeSection);
+            }
+        });
+    </script>
 
 </body>
 </html>
