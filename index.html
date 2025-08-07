@@ -186,10 +186,12 @@
 
     <!-- ================== SEZIONE HOME ================== -->
         <section id="home">
+
             <video id="home-video" autoplay loop muted playsinline>
-                <source src="/project/placeholder.mp4" type="video/mp4">
+                <source src="/project/placeholder.webm" type="video/webm">
                 Il tuo browser non supporta il tag video.
             </video>
+
             <style>
                 #home {
                     padding: 0;
@@ -209,7 +211,7 @@
             </style>
         </section>
         
-    <!-- ================== SEZIONE WORK (Responsive con Overlay Adattato) ====================== -->
+    <!-- ================== SEZIONE WORK (Responsive con Hover Mobile Disattivato) ====================== -->
         <section id="work">
             <h2>I Nostri Lavori</h2>
             <p>Una selezione dei nostri progetti più recenti.</p>
@@ -256,48 +258,34 @@
                 .work-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: filter 0.3s ease; }
                 .work-item-marquee { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--colore-primario); color: var(--colore-secondario); white-space: nowrap; opacity: 0; transition: opacity 0.3s ease; }
                 .work-item-marquee span { display: inline-block; padding: 12px; text-transform: uppercase; animation: marquee 10s linear infinite; animation-play-state: paused; }
-                .work-item:hover img { filter: grayscale(1) brightness(0.5); }
-                .work-item:hover .work-item-marquee { opacity: 1; }
-                .work-item:hover .work-item-marquee span { animation-play-state: running; }
+                
+                /* MODIFICA: Le regole di hover sono ora attive solo su dispositivi con mouse */
+                @media (hover: hover) {
+                    .work-item:hover img {
+                        filter: grayscale(1) brightness(0.5);
+                    }
+                    .work-item:hover .work-item-marquee {
+                        opacity: 1;
+                    }
+                    .work-item:hover .work-item-marquee span {
+                        animation-play-state: running;
+                    }
+                }
                 
                 #project-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--colore-accento); z-index: 1000; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.6, 0.04, 0.98, 0.335); }
                 #project-overlay.active { transform: translateY(0); }
-                
                 .overlay-content { display: flex; width: 100%; height: 100%; }
-
                 .overlay-image-container { flex: 3; padding: 32px; }
                 .overlay-text-container { flex: 2; padding: 32px; color: var(--colore-primario); border-left: 2px solid var(--colore-primario); display: flex; flex-direction: column; justify-content: center; }
-                
                 #overlay-image { width: 100%; height: 100%; object-fit: contain; }
                 #overlay-title { text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; }
-
                 #close-overlay { position: absolute; top: 24px; right: 32px; background: transparent; border: 2px solid var(--colore-primario); color: var(--colore-primario); font-size: 20px; width: 32px; height: 32px; padding: 0; }
 
-                /* === MODIFICHE PER MOBILE === */
                 @media (max-width: 800px) {
-                    .overlay-content {
-                        /* MODIFICA: Impila i contenitori verticalmente */
-                        flex-direction: column;
-                    }
-
-                    .overlay-image-container {
-                        /* MODIFICA: L'immagine occupa una porzione fissa dell'altezza */
-                        flex: none;
-                        height: 40vh;
-                        padding: 16px;
-                    }
-                    .overlay-text-container {
-                        /* MODIFICA: Il testo occupa lo spazio rimanente e può scrollare */
-                        flex: 1;
-                        padding: 16px;
-                        border-left: none; /* Rimuove il bordo laterale */
-                        justify-content: flex-start; /* Allinea il testo all'inizio */
-                        overflow-y: auto; /* Abilita lo scroll se il testo è lungo */
-                    }
-                    #close-overlay {
-                        top: 16px;
-                        right: 16px;
-                    }
+                    .overlay-content { flex-direction: column; }
+                    .overlay-image-container { flex: none; height: 40vh; padding: 16px; }
+                    .overlay-text-container { flex: 1; padding: 16px; border-left: none; justify-content: flex-start; overflow-y: auto; }
+                    #close-overlay { top: 16px; right: 16px; }
                 }
             </style>
 
@@ -315,11 +303,9 @@
                             const title = item.dataset.title;
                             const imgSrc = item.querySelector('img').src;
                             const description = item.dataset.description;
-
                             overlayTitle.textContent = title;
                             overlayImage.src = imgSrc;
                             overlayDescription.textContent = description;
-                            
                             overlay.classList.add('active');
                             document.body.style.overflow = 'hidden';
                         };
@@ -336,21 +322,21 @@
             </script>
         </section>
 
-    <!-- ================== SEZIONE TEAM (Responsive con Card Quadrate) ================== -->
+        <!-- ================== SEZIONE TEAM (Hover Mobile Disattivato Correttamente) ================== -->
         <section id="team">
             <h2>Il Nostro Team</h2>
             <p>Le menti creative dietro ogni progetto. Pronti a collaborare?</p>
             
             <div class="team-container">
                 <div class="team-member">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80" alt="Foto di un membro del team">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format=fit-crop&w=764&q=80" alt="Foto di un membro del team">
                     <div class="member-info">
                         <h3>Elara Vance</h3>
                         <p>Art Director</p>
                     </div>
                 </div>
                 <div class="team-member">
-                    <img src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="Foto di un membro del team">
+                    <img src="https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit-crop&w=880&q=80" alt="Foto di un membro del team">
                     <div class="member-info">
                         <h3>Jax Orion</h3>
                         <p>Lead Designer</p>
@@ -366,49 +352,14 @@
             </div>
 
             <style>
-                #team {
-                    background-color: #fafafa;
-                }
+                #team { background-color: #fafafa; }
                 
-                /* --- Stili Desktop --- */
-                .team-container {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-                    gap: 32px;
-                    margin-top: 32px;
-                }
-                .team-member {
-                    position: relative;
-                    margin-bottom: 32px;
-                }
-                .team-member img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    display: block;
-                    border: 2px solid var(--colore-primario);
-                    transition: filter 0.3s ease;
-                }
-                .member-info {
-                    position: absolute;
-                    bottom: -20px;
-                    left: -20px;
-                    background-color: var(--colore-secondario);
-                    border: 2px solid var(--colore-primario);
-                    padding: 10px 14px;
-                    z-index: 2;
-                    transition: border-color 0.3s ease, color 0.3s ease;
-                }
-                .member-info h3, .member-info p {
-                    color: var(--colore-primario);
-                    margin: 0;
-                    text-transform: uppercase;
-                    transition: color 0.3s ease;
-                }
-                .member-info p {
-                    font-size: 14px;
-                    opacity: 0.7;
-                }
+                .team-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 32px; margin-top: 32px; }
+                .team-member { position: relative; margin-bottom: 32px; transition: transform 0.2s ease; } /* Aggiunta transizione per :active */
+                .team-member img { width: 100%; height: 100%; object-fit: cover; display: block; border: 2px solid var(--colore-primario); transition: filter 0.3s ease; }
+                .member-info { position: absolute; bottom: -20px; left: -20px; background-color: var(--colore-secondario); border: 2px solid var(--colore-primario); padding: 10px 14px; z-index: 2; transition: border-color 0.3s ease, color 0.3s ease; }
+                .member-info h3, .member-info p { color: var(--colore-primario); margin: 0; text-transform: uppercase; transition: color 0.3s ease; }
+                .member-info p { font-size: 14px; opacity: 0.7; }
 
                 @media (hover: hover) {
                     .team-member:hover img { filter: grayscale(100%); }
@@ -416,29 +367,24 @@
                     .team-member:hover .member-info h3, .team-member:hover .member-info p { color: var(--colore-accento); }
                 }
 
-                /* === MODIFICHE PER MOBILE === */
                 @media (max-width: 800px) {
-                    .team-container {
-                        padding: 0 24px;
-                        gap: 24px;
+                    .team-container { padding: 0 24px; gap: 24px; }
+                    .team-member { margin-bottom: 24px; aspect-ratio: 1 / 1; }
+                    .member-info { bottom: 0; left: 0; width: 100%; border: none; padding: 24px 16px; color: white; background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%); }
+                    .member-info h3, .member-info p { color: white; }
+
+                    /* MODIFICA CHIAVE: Disattiva esplicitamente l'effetto hover su mobile */
+                    .team-member:hover img {
+                        filter: none;
                     }
-                    .team-member {
-                        margin-bottom: 24px;
-                        /* MODIFICA CHIAVE: Forziamo la card a essere un quadrato */
-                        aspect-ratio: 1 / 1;
+                    .team-member:hover .member-info h3,
+                    .team-member:hover .member-info p {
+                        color: white;
                     }
-                    .member-info {
-                        /* MODIFICA CHIAVE: Riposizioniamo il blocco info all'interno della card */
-                        bottom: 0;
-                        left: 0;
-                        width: 100%;
-                        border: none;
-                        padding: 24px 16px;
-                        color: white; /* Testo chiaro sul gradiente scuro */
-                        background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
-                    }
-                    .member-info h3, .member-info p {
-                        color: white; /* Testo chiaro sul gradiente scuro */
+
+                    /* Aggiunge un feedback al tocco, che è una pratica migliore per il mobile */
+                    .team-member:active {
+                        transform: scale(0.98);
                     }
                 }
             </style>
